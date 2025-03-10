@@ -24,7 +24,7 @@ SRC := https://github.com/coredns/coredns/archive/v$(DPKG_COREDNS_VERSION).tar.g
 
 %:
 	dh_clean
-	dh $@ --with systemd
+	dh $@
 
 override_dh_strip:
 	# don't perform dh_strip
@@ -42,6 +42,7 @@ override_dh_auto_install:
 	tar -xf $(VTARBALL) -C v$(DPKG_COREDNS_VERSION)
 	cp v$(DPKG_COREDNS_VERSION)/coredns-$(DPKG_COREDNS_VERSION)/man/* debian/man/
 	cp debian/Corefile debian/coredns/etc/coredns/Corefile
+	dh_installsysusers
 
 override_dh_gencontrol:
 	dh_gencontrol -- -v$(PACKAGEVERSION)

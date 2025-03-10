@@ -1,6 +1,10 @@
 Source: coredns
 Maintainer: Miek Gieben <miek@coredns.io>
-Build-Depends: debhelper (>= 9), ca-certificates, curl, base-files (>= 11.1~) | dh-systemd, lsb-release, jq
+Build-Depends:
+ debhelper-compat (= 13),
+ ca-certificates,
+ curl,
+ base-files (>= 11.1~) | dh-sysuser, lsb-release, jq
 
 Package: coredns
 Architecture: any
