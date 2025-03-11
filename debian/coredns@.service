@@ -42,8 +42,6 @@ WorkingDirectory=/var/lib/coredns
 ExecStart=/usr/bin/coredns -conf=/etc/coredns/Corefile.%i
 ExecReload=/bin/kill -SIGUSR1 $MAINPID
 Restart=on-failure
-StandardOutput=append:/var/log/coredns.log
-StandardError=append:/var/log/coredns.err.log
 
 
 [Install]
