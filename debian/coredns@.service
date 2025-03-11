@@ -1,0 +1,50 @@
+# /etc/systemd/system/coredns@.service
+#
+# SPDX-FileCopyrightText: © William Blew
+# SPDX-License-Identifier: Apache-2.0
+
+# This systemd service template couples an instance of coredns@.service to
+# another systemd service. e.g. The samba-ad-dc.service would be coupled
+# with our coredns@samba-ad-dc.service instance.
+#
+# The idea is that coredns@INSTANCE.service manages an instance of coredns
+#   that provides CoreDNS services to the INSTANCE.SERVICE managed daemon.
+#
+# The CoreDNS configuration file is: /etc/coredns/Corefile.INSTANCE
+#   E.G. coredns@samba-ad-dc.service => /etc/coredns/Corefile.samba-ad-dc
+
+# Summary coredns@INSTANCE.service on the INSTANCE.service dependencies:
+#
+#  WantedBy - when INSTANCE.service is started coredns@INSTANCE.service is started
+#
+#     After - dnscore@INSTANCE.service starts after INSTANCE.service has started and is active
+#
+# Requesite - coredns@INSTANCE.service cannot start unless INSTANCE.service is active
+#
+# The coredns@INSTANCE.service can be stopped and started while its INSTANCE.service
+#   remains active and unaffected. This is WantedBy, not RequiredBy, nor UpheldBy.
+
+[Unit]
+Description=CoreDNS DNS server for %i service
+Documentation=https://coredns.io
+After=%i.service
+Requisite=%i.service
+
+[Service]
+PermissionsStartOnly=true
+LimitNOFILE=1048576
+LimitNPROC=512
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+User=coredns
+WorkingDirectory=/var/lib/coredns
+ExecStart=/usr/bin/coredns -conf=/etc/coredns/Corefile.%i
+ExecReload=/bin/kill -SIGUSR1 $MAINPID
+Restart=on-failure
+StandardOutput=append:/var/log/coredns.log
+StandardError=append:/var/log/coredns.err.log
+
+
+[Install]
+WantedBy=%i.service
