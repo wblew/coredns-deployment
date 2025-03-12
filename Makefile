@@ -33,3 +33,7 @@ redhat-clean:
 	rm -r $(mkfile_dir)/redhat/RPMS/*
 	rm -r $(mkfile_dir)/redhat/SRPMS/*
 	rm -r $(mkfile_dir)/redhat/BUILD/*
+
+.PHONY: print-%
+print-%:
+	@echo '$*=$($*)'
