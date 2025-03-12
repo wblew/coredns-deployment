@@ -46,3 +46,6 @@ override_dh_auto_install:
 
 override_dh_gencontrol:
 	dh_gencontrol -- -v$(PACKAGEVERSION)
+
+override_dh_clean:
+	dh_clean $(TARBALL) $(VTARBALL) debian/man/ v$(DPKG_COREDNS_VERSION)/
