@@ -1,0 +1,9 @@
+coredns_*.tgz
+v1*.tar.gz
+v1*/
+debian/coredns/
+debian/debhelper-*
+debian/files
+debian/man/
+debian/*.debhelper*
+debian/*.substvars
